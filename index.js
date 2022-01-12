@@ -2,7 +2,7 @@ const express = require('express')
 const app = express()
 const port = 3000
 
-app.get('/', async (req, res) => {
+app.get('/', (req, res) => {
     // const vault = require("node-vault")({
     //     apiVersion: "v1",
     //     endpoint: "http://127.0.0.1:8200",
