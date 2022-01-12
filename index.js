@@ -3,11 +3,11 @@ const app = express()
 const port = 3000
 
 app.get('/', async (req, res) => {
-    const vault = require("node-vault")({
-        apiVersion: "v1",
-        endpoint: "http://127.0.0.1:8200",
-    });
-
+    // const vault = require("node-vault")({
+    //     apiVersion: "v1",
+    //     endpoint: "http://127.0.0.1:8200",
+    // });
+    res.send({"hello": "world"})
     // const roleId = process.env.ROLE_ID;
     // const secretId = process.env.SECRET_ID;
 
