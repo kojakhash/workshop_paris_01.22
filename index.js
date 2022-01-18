@@ -2,13 +2,22 @@
 const express = require('express')
 const app = express()
 const port = 3000
+const Vault = require('hashi-vault-js');
+
 
 app.get('/', (req, res) => {
-    // const vault = require("node-vault")({
-    //     apiVersion: "v1",
-    //     endpoint: "http://127.0.0.1:8200",
-    // });
-    res.send({"hello": "world"})
+    var roleId = process.env.ROLE_ID
+    var secretId = process.env.SECRET_ID
+    const vault = new Vault({
+        https: false,
+        baseUrl: 'https://workshop-admin.vault.b8344a1a-2808-4e20-a17b-9b38348b47df.aws.hashicorp.cloud:8200/v1',
+        rootPath: 'secret',
+        timeout: 5000,
+        proxy: false
+    });
+    const token = await vault.loginWithAppRole(roleId, secretId).client_token;
+
+    res.send({"hello": token+"354ojfe"})
     // const roleId = process.env.ROLE_ID;
     // const secretId = process.env.SECRET_ID;
 
