@@ -5,36 +5,21 @@ const port = 3000
 const Vault = require('hashi-vault-js');
 
 
-app.get('/', (req, res) => {
+app.get('/', async (req, res) => {
     var roleId = process.env.ROLE_ID
     var secretId = process.env.SECRET_ID
+    var vaultURL = process.env.VAULT_ADDR
     const vault = new Vault({
         https: false,
-        baseUrl: 'https://workshop-admin.vault.b8344a1a-2808-4e20-a17b-9b38348b47df.aws.hashicorp.cloud:8200/v1',
-        rootPath: 'secret',
+        baseUrl: `${vaultURL}/v1`,
+        rootPath: 'auth/approle',
         timeout: 5000,
-        proxy: false
+        proxy: false,
+        namespace: 'admin'
     });
-    const token = await vault.loginWithAppRole(roleId, secretId).client_token;
+    const token = await vault.loginWithAppRole(roleId, secretId);
 
-    res.send({"hello": token+"354ojfe"})
-    // const roleId = process.env.ROLE_ID;
-    // const secretId = process.env.SECRET_ID;
-
-    // const result = await vault.approleLogin({
-    //     role_id: roleId,
-    //     secret_id: secretId,
-    // });
-
-    // vault.token = result.auth.client_token;
-
-    // vault.read('v1/kv/data/bc');
-
-    // vault.write('kv/bc', { key: "privateKey", value: account.privateKey })
-    //     .catch(console.error);
-
-    // console.log(account);
-    // res.send(account)
+    res.send({ "hello": token.client_token})
 })
 
 app.listen(port, () => {
