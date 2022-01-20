@@ -18,8 +18,8 @@ app.get('/', async (req, res) => {
         namespace: 'admin'
     });
     const token = await vault.loginWithAppRole(roleId, secretId);
-
-    res.send({ "hello": token.client_token})
+    const secrets = await vault.readKVSecret(token.client_token, "internal-api");
+    res.send({ "hello": secrets})
 })
 
 app.listen(port, () => {
